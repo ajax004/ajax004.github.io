@@ -5,43 +5,55 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       background-color: #f0f8ff;
-      color: #333;
-      padding: 20px;
+      margin: 0;
     }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-    }
-    p.intro {
-      text-align: center;
-      font-size: 18px;
-      color: #555;
-      margin-bottom: 30px;
-    }
-    .project-list, .project-details {
-      max-width: 800px;
-      margin: 20px auto;
+    .container {
+      display: flex;
+      width: 80%;
+      height: 80%;
       background: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
     }
-    ul {
+    .sidebar {
+      width: 30%;
+      background-color: #e7f3fe;
+      overflow-y: auto;
+      padding: 20px;
+      border-right: 2px solid #ccc;
+    }
+    .sidebar ul {
       list-style-type: none;
       padding: 0;
     }
-    li {
-      margin: 10px 0;
-      padding: 12px;
-      background: #e7f3fe;
+    .sidebar li {
+      padding: 10px;
+      margin-bottom: 8px;
+      background-color: #d0e8ff;
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s;
     }
-    li:hover {
-      background-color: #d0e8ff;
+    .sidebar li:hover {
+      background-color: #a9d6ff;
+    }
+    .main-content {
+      width: 70%;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .execution-window {
+      border: 2px solid #ccc;
+      padding: 15px;
+      height: calc(100% - 40px);
+      background-color: #f9f9f9;
+      border-radius: 5px;
     }
     button {
       padding: 10px 20px;
@@ -50,7 +62,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background-color 0.3s;
     }
     button:hover {
       background-color: #45A049;
@@ -58,33 +70,32 @@
   </style>
   <script>
     async function executePython(project) {
-      const response = await fetch(`/run/${project}`);
-      const result = await response.text();
-      alert(`Execution Result:\n${result}`);
-    }
-
-    function showProjectDetails(name, description, project) {
-      const details = document.getElementById('project-details');
-      details.innerHTML = `<h3>${name}</h3><p>${description}</p><button onclick="executePython('${project}')">Run Project</button>`;
+      try {
+        const response = await fetch(`https://raw.githubusercontent.com/yourusername/repo/main/${project}.py`);
+        const code = await response.text();
+        document.getElementById('execution-window').innerText = `Loaded Python Code:\n${code}`;
+      } catch (error) {
+        document.getElementById('execution-window').innerText = 'Error loading project from GitHub.';
+      }
     }
   </script>
 </head>
 <body>
-  <h1>My 100 Python Projects - Portfolio</h1>
-  <p class="intro">
-    Explore my 100 Python projects from my coding challenge. Click on a project for details and to run it.
-  </p>
-
-  <div class="project-list">
-    <ul>
-      <li onclick="showProjectDetails('Band Name Generator','Generates a band name based on city and pet names.','bantest')">Project 1: Band Name Generator</li>
-      <li onclick="showProjectDetails('Tip Calculator','Calculates the tip based on your bill.','tip_calculator')">Project 2: Tip Calculator</li>
-      <li onclick="showProjectDetails('Password Generator','Creates secure passwords for your accounts.','password_generator')">Project 3: Password Generator</li>
-    </ul>
-  </div>
-
-  <div id="project-details" class="project-details">
-    <p>Select a project to see details here.</p>
+  <div class="container">
+    <div class="sidebar">
+      <h2>Project List</h2>
+      <ul>
+        <li onclick="executePython('bantest')">Project 1: Band Name Generator</li>
+        <li onclick="executePython('tip_calculator')">Project 2: Tip Calculator</li>
+        <li onclick="executePython('password_generator')">Project 3: Password Generator</li>
+      </ul>
+    </div>
+    <div class="main-content">
+      <h2>Execution Window</h2>
+      <div id="execution-window" class="execution-window">
+        Select a project from the sidebar to load its Python code.
+      </div>
+    </div>
   </div>
 </body>
 </html>
