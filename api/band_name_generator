@@ -2,8 +2,10 @@ from http.server import BaseHTTPRequestHandler
 import json
 
 # Replace this with your band name generator code
-def generate_band_name():
-    return "The Electric Bananas"
+print("Welcome to the Band Name Generator")
+name_of_city = input("What's is the name of the city you grew up in?\n")
+name_of_pet = input("What's your pet's name?\n")
+print("Your band name could be " + name_of_city + " " + name_of_pet)
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
