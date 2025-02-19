@@ -68,18 +68,11 @@
       align-items: center;
       justify-content: center;
     }
-    .execution-window iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-      border-radius: 7px;
-      background-color: #222;
-    }
   </style>
   <script>
     function executePython(project) {
       const colabURL = `https://colab.research.google.com/github/ajax004/ajax004.github.io/blob/main/${project}.ipynb`;
-      document.getElementById('execution-window').innerHTML = `<iframe src="${colabURL}" title="${project} Demo"></iframe>`;
+      window.open(colabURL, '_blank');
     }
   </script>
 </head>
@@ -98,9 +91,7 @@
     </div>
     <div class="main-content">
       <h2>Execution Window</h2>
-      <div id="execution-window" class="execution-window">
-        Select a project from the sidebar to run its demo.
-      </div>
+      <p>Select a project from the sidebar to open it in Google Colab.</p>
     </div>
   </div>
 </body>
